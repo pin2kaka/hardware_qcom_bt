@@ -6,12 +6,18 @@ ifneq ($(BOARD_IS_AUTOMOTIVE),true)
     endif
     include $(call all-named-subdir-makefiles,$(TARGET_QCOM_BLUETOOTH_VARIANT))
   else
-   ifneq ($(filter msm8x27 msm8226 msm8974 msm8960,$(TARGET_BOARD_PLATFORM)),)
-     include $(call all-named-subdir-makefiles,msm8960)
-   else ifneq ($(filter msm8992 msm8994,$(TARGET_BOARD_PLATFORM)),)
-     include $(call all-named-subdir-makefiles,msm8992)
-   else ifneq ($(wildcard $(LOCAL_PATH)/$(TARGET_BOARD_PLATFORM)),)
-     include $(call all-named-subdir-makefiles,$(TARGET_BOARD_PLATFORM))
-   endif
+  ifneq ($(filter msm8x27 msm8226,$(TARGET_BOARD_PLATFORM)),)
+    include $(call all-named-subdir-makefiles,msm8960)
+  else ifneq ($(filter msm8994,$(TARGET_BOARD_PLATFORM)),)
+    include $(call all-named-subdir-makefiles,msm8992)
+  else ifneq ($(filter msm8909,$(TARGET_BOARD_PLATFORM)),)
+    ifeq ($(TARGET_SUPPORTS_QCOM_3100),true)
+      include $(call all-named-subdir-makefiles,msm8909w_3100)
+    else
+      include $(call all-named-subdir-makefiles,msm8909)
+    endif
+  else ifneq ($(wildcard $(LOCAL_PATH)/$(TARGET_BOARD_PLATFORM)),)
+    include $(call all-named-subdir-makefiles,$(TARGET_BOARD_PLATFORM))
+  endif
   endif
 endif
